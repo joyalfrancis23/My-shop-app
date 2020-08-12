@@ -1,7 +1,8 @@
 //This contains the scelton of the a product.
+//This also contains the logic to mark a product as favorite or to unfavorite.
 import 'package:flutter/foundation.dart';
 
-class Product{
+class Product with ChangeNotifier{
   final String id;
   final String title;
   final String description;
@@ -15,4 +16,10 @@ class Product{
     @required this.price,
     @required this.imageUrl,
     this.isFavourite = false});
+
+void toggleFavoriteStatus(){
+  isFavourite = ! isFavourite;
+  notifyListeners();
+
+}
 }
