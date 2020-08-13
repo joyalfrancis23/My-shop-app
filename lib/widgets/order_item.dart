@@ -1,3 +1,5 @@
+//Widget for showing the items that are ordered through this app
+
 import 'dart:math';
 import 'package:My_shop/providers/orders.dart';
 import 'package:flutter/material.dart';

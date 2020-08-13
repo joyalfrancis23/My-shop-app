@@ -1,4 +1,4 @@
-
+//widget from every item in a cart, this contains a model of an item in the cart screen.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
@@ -25,9 +25,29 @@ class CartItem extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.startToEnd,
+       confirmDismiss: (direction){
+        return showDialog(context: context, builder: (ctx) => AlertDialog(
+          title: Text('Are you sure ?'),
+          content: Text('Do you want to remove the item from the cart'),
+          actions: <Widget>[
+            FlatButton(onPressed: (){
+              Navigator.of(ctx).pop(false);
+            }, child: Text('NO')
+            
+            ),
+            FlatButton(onPressed: (){
+              Navigator.of(ctx).pop(true);
+            }, child: Text('YES')
+            
+            )
+
+          ],
+        ));
+      },
       onDismissed: (direction){
         Provider.of<Cart>(context,listen:false).removeItem(productId);
       },
+     
           child: Card(
         margin: EdgeInsets.symmetric(
           vertical:4,

@@ -1,3 +1,6 @@
+//This is a Widget that is used to create a side Drawer on each and every screen.
+//It contains options like shop,Orders,manage products. 
+import 'package:My_shop/screens/user_products.dart';
 import 'package:flutter/material.dart';
 import '../screens/order_screen.dart';
 
@@ -21,6 +24,12 @@ class AppDrawer extends StatelessWidget {
             leading:Icon(Icons.payment,),
             title: Text('Orders'),
             onTap:(){ Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);}
+          ),
+          Divider(),
+          ListTile(
+            leading:Icon(Icons.payment,),
+            title: Text('Manage Products'),
+            onTap:(){ Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);}
           ),
           
         ]

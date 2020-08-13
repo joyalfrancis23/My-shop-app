@@ -1,3 +1,5 @@
+//This screen is displayed when we tap into the Orders section in the side drawer.
+//Here we can see our list of Orders that we had did.
 import 'package:flutter/material.dart';
 import '../providers/orders.dart' show Order; 
 import 'package:provider/provider.dart';

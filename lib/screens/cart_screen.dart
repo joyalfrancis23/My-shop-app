@@ -1,3 +1,5 @@
+//This screen is displayed when we tap in the cart icon on the appBar 
+//Here we can see the list of items that are added to cart and we can order the items in this screen
 import 'package:flutter/material.dart';
 
 import '../providers/cart.dart';
