@@ -1,6 +1,11 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'product.dart';
+
 
 
 class Products with ChangeNotifier{
@@ -55,9 +60,44 @@ class Products with ChangeNotifier{
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
- void addProduct(){
+ void addProduct(Product product){
+   const url = 'https://shop-app-fdd66.firebaseio.com/products.json';
+   http.post(
+     url,
+     body: jsonEncode(
+       {
+         'title': product.title,
+         'description': product.description,
+         'imageUrl': product.imageUrl,
+         'price': product.price,
+         'isFavorite': product.isFavourite
+       }
+     )
+   );
+   final newProduct = Product(
+     id: DateTime.now().toString(),
+      title: product.title,
+       description: product.description,
+        price: product.price,
+         imageUrl: product.imageUrl
+         );
+         _items.add(newProduct);
+
    notifyListeners();
  }
+ 
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+  void deleteProduct(String id){
+    _items.removeWhere((element) => element.id == id);
+  }
 //  void showFavouritesOnly(){
 //    _showFavouritesOnly = true;
 //    notifyListeners();
