@@ -73,9 +73,9 @@ class Products with ChangeNotifier{
          'isFavorite': product.isFavourite
        }
      )
-   );
-   final newProduct = Product(
-     id: DateTime.now().toString(),
+   ).then((value) {
+      final newProduct = Product(
+     id: json.decode(value.body)['name'],
       title: product.title,
        description: product.description,
         price: product.price,
@@ -84,6 +84,8 @@ class Products with ChangeNotifier{
          _items.add(newProduct);
 
    notifyListeners();
+   });
+  
  }
  
   void updateProduct(String id, Product newProduct) {
