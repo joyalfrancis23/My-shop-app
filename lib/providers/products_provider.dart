@@ -60,9 +60,9 @@ class Products with ChangeNotifier{
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
- void addProduct(Product product){
+ Future <void> addProduct(Product product){
    const url = 'https://shop-app-fdd66.firebaseio.com/products.json';
-   http.post(
+ return http.post(
      url,
      body: jsonEncode(
        {
@@ -84,6 +84,8 @@ class Products with ChangeNotifier{
          _items.add(newProduct);
 
    notifyListeners();
+   }).catchError((error){
+     throw error;
    });
   
  }

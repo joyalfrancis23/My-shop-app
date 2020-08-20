@@ -18,6 +18,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode  =  FocusNode();
   final _form = GlobalKey<FormState>();
+  var _isLoading = false;
   var _editedProduct = Product(id: null, title: '', description: '', price: 0.0, imageUrl: '');
 var _isInit = true;
 var _initValues = {
@@ -78,11 +79,15 @@ _initValues = {
   }
   void _saveForm(){
     final isValid = _form.currentState.validate();
+   
     if (!isValid){
 
       return;
     }
     _form.currentState.save();
+     setState(() {
+      _isLoading = true;
+    });
     // print(_editedProduct.title);
     //  print(_editedProduct.id);
     //   print(_editedProduct.price);
@@ -90,10 +95,34 @@ _initValues = {
     //     print(_editedProduct.description);
     if(_editedProduct.id != null){
       Provider.of<Products>(context,listen: false).updateProduct(_editedProduct.id,_editedProduct);
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     }else{
-    Provider.of<Products>(context,listen: false).addProduct(_editedProduct);
+      
+    Provider.of<Products>(context,listen: false).addProduct(_editedProduct)
+    .catchError((error){
+      return showDialog<Null>(context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Error'),
+        content:  Text('OOPS Something went wrong !!'),
+        actions:<Widget>[
+          FlatButton(onPressed: (){
+Navigator.of(context).pop();
+          }, child: Text('Okay'))
+        ]
+      )
+      );
+    })
+    .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
+      } );
     }
-    Navigator.of(context).pop();
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -105,7 +134,9 @@ _initValues = {
         ),
       ],
       ),
-      body: Padding(
+      body: _isLoading?Center(
+      child: CircularProgressIndicator(),
+      ) :Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
           key: _form,
