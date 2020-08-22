@@ -77,7 +77,7 @@ _initValues = {
       
     });}
   }
-  void _saveForm(){
+  Future<void>  _saveForm()  async{
     final isValid = _form.currentState.validate();
    
     if (!isValid){
@@ -100,10 +100,10 @@ _initValues = {
       });
       Navigator.of(context).pop();
     }else{
-      
-    Provider.of<Products>(context,listen: false).addProduct(_editedProduct)
-    .catchError((error){
-      return showDialog<Null>(context: context,
+      try{
+         await Provider.of<Products>(context,listen: false).addProduct(_editedProduct);
+      }catch(error){
+showDialog<Null>(context: context,
       builder: (ctx) => AlertDialog(
         title: Text('Error'),
         content:  Text('OOPS Something went wrong !!'),
@@ -114,14 +114,20 @@ Navigator.of(context).pop();
         ]
       )
       );
-    })
-    .then((_) {
-      setState(() {
+      }
+   
+    
+     finally{
+        setState(() {
         _isLoading = false;
       });
       Navigator.of(context).pop();
-      } );
+      
     }
+     }
+
+    
+     
     
   }
   @override
